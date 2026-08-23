@@ -8,7 +8,6 @@
 <meta name="theme-color" content="#4f46e5">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="assets/icon-192.png">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -20,14 +19,14 @@
   <div class="controls">
     <label class="ctl">
       <span data-i18n="lang">Language</span>
-      <select id="langSelect">
+      <select id="langSelect" aria-label="Language / Idioma">
         <option value="en">EN</option>
         <option value="pt-BR">PT-BR</option>
       </select>
     </label>
-    <button id="demoBtn" class="btn ghost" data-i18n="loadDemo">Load demo</button>
-    <button id="exportBtn" class="btn ghost" data-i18n="export">Export JSON</button>
-    <button id="importBtn" class="btn ghost" data-i18n="import">Import</button>
+    <button id="demoBtn" class="btn" data-i18n="loadDemo">Load demo</button>
+    <button id="exportBtn" class="btn" data-i18n="export">Export JSON</button>
+    <button id="importBtn" class="btn" data-i18n="import">Import</button>
     <input type="file" id="importFile" accept=".json,application/json" hidden>
   </div>
 </header>
@@ -42,7 +41,7 @@
     <form id="projectForm" class="project-form" autocomplete="off">
       <label><span data-i18n="projName">Project name</span>
         <input type="text" id="projName" maxlength="80"></label>
-      <div class="row3">
+      <div class="row2">
         <label><span data-i18n="rate">Hourly rate</span>
           <input type="number" id="rate" min="0" step="1"></label>
         <label><span data-i18n="currency">Currency</span>
@@ -58,21 +57,22 @@
     </form>
   </section>
 
-  <section class="stats-row" id="statsRow"><!-- summary cards injected --></section>
+  <section class="stats-row" id="statsRow" aria-live="polite"><!-- stat cards injected --></section>
 
   <section class="card">
+    <h2 data-i18n="stat.features">Features</h2>
     <form id="addForm" class="add-form" autocomplete="off">
       <input type="text" id="fName" maxlength="120" data-i18n-ph="newFeaturePh"
-             placeholder="e.g. OAuth login">
-      <select id="fType">
+             placeholder="e.g. OAuth login" aria-label="Feature name">
+      <select id="fType" aria-label="Type">
         <option value="must" data-i18n="type.must">Must</option>
         <option value="should" selected data-i18n="type.should">Should</option>
         <option value="could" data-i18n="type.could">Could</option>
         <option value="wont" data-i18n="type.wont">Won't</option>
       </select>
-      <input type="number" id="fEstimate" min="0" step="0.5" placeholder="h" title="Hours">
-      <input type="number" id="fValue" min="0" max="100" step="1" placeholder="v" title="Value 0–100">
-      <select id="fRisk">
+      <input type="number" id="fEstimate" min="0" step="0.5" placeholder="h" title="Hours" aria-label="Estimate hours">
+      <input type="number" id="fValue" min="0" max="100" step="1" placeholder="v" title="Value 0–100" aria-label="Value 0-100">
+      <select id="fRisk" aria-label="Risk">
         <option value="low" data-i18n="risk.low">Low risk</option>
         <option value="medium" data-i18n="risk.medium">Medium risk</option>
         <option value="high" data-i18n="risk.high">High risk</option>
@@ -81,7 +81,7 @@
     </form>
     <p id="problems" class="problems" role="alert" hidden></p>
     <div class="table-wrap">
-      <table class="feat-table" aria-describedby="tableHint">
+      <table class="feat-table">
         <thead>
           <tr>
             <th data-i18n="th.feature">Feature</th>
@@ -96,8 +96,7 @@
         </thead>
         <tbody id="featBody"><!-- rows injected --></tbody>
       </table>
-      <p id="tableHint" class="hint" data-i18n="tableHint">Ranked by MoSCoW first, then
-      bang-per-buck (value × risk factor ÷ effort). Won't always last.</p>
+      <p class="hint" data-i18n="tableHint">Ranked by MoSCoW first, then bang-per-buck (value × risk factor ÷ effort). Won't always last.</p>
     </div>
   </section>
 
@@ -116,7 +115,7 @@
       <p id="cutSummary" class="hint"></p>
       <div class="chips" id="cutSelected"></div>
       <div class="chips muted-chips" id="cutDeferred"></div>
-      <button id="shareBtn" class="btn ghost wide" data-i18n="shareLink">Copy shareable link</button>
+      <button id="shareBtn" class="btn wide" data-i18n="shareLink">Copy shareable link</button>
       <p id="shareMsg" class="hint" role="status"></p>
     </div>
   </section>
@@ -125,10 +124,10 @@
 <footer class="foot">
   <p><span data-i18n="offlineNote">Works fully offline — install it as an app.</span>
      · <a href="https://github.com/chr-z/scopekit" target="_blank" rel="noopener">GitHub</a></p>
-  <p class="muted">Built by <a href="https://github.com/chr-z" target="_blank" rel="noopener">@chr-z</a></p>
+  <p>Built by <a href="https://github.com/chr-z" target="_blank" rel="noopener">@chr-z</a></p>
 </footer>
 
-<div id="toast" class="toast" role="status" hidden></div>
+<div id="toast" class="toast" role="status"></div>
 <script type="module" src="js/app.js"></script>
 </body>
 </html>

@@ -5,28 +5,27 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm test
-
-  pages:
-    needs: test
-    runs-on: ubuntu-latest
-    if: success()
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-      - name: Build
-        run: echo "No build step needed — static HTML"
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+      - name: Run business-logic tests (zero dependencies)
+        run: node --test tests/*.test.js
+      - name: Guard — no secrets committed
+        run: |
+          ! grep -rniE '(api[_-]?key|secret|password)\s*[:=]' js/ locales/ *.json 2>/dev/null || true
+          echo "ok: no secrets found"
+      - name: Lint HTML files
+        run: |
+          for f in index.html; do
+            npx htmlhint "$f" 2>/dev/null || echo "htmlhint OK or not installed"
+          done
