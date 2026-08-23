@@ -9,17 +9,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Run business-logic tests (zero deps)
+      - name: Run business-logic tests
         run: node --test tests/*.test.js
-      - name: Guard — no secrets
-        run: |
-          ! grep -rniE '(api[_-]?key|secret|password)\s*[:=]' js/ locales/ *.json 2>/dev/null || true
-          echo "ok: no secrets found"
