@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScopeKit — Plan features & scope for micro-SaaS</title>
+<meta name="description" content="MoSCoW scope planner with bang-per-buck prioritization, cost estimates, weekend-safe timeline and shareable links. Free, offline, no account.">
+<meta name="theme-color" content="#4f46e5">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./">
+    <img src="assets/icon.svg" alt="" width="26" height="26">
+    <span>ScopeKit</span>
+  </a>
+  <div class="controls">
+    <label class="ctl">
+      <span data-i18n="lang">Language</span>
+      <select id="langSelect">
+        <option value="en">EN</option>
+        <option value="pt-BR">PT-BR</option>
+      </select>
+    </label>
+    <button id="demoBtn" class="btn ghost" data-i18n="loadDemo">Load demo</button>
+    <button id="exportBtn" class="btn ghost" data-i18n="export">Export JSON</button>
+    <button id="importBtn" class="btn ghost" data-i18n="import">Import</button>
+    <input type="file" id="importFile" accept=".json,application/json" hidden>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero card">
+    <div class="hero-text">
+      <h1 data-i18n="heroTitle">Scope that ships.</h1>
+      <p data-i18n="heroSub">Rank features by bang-per-buck, price the build, and get a
+      weekend-safe delivery timeline — in one screen, no account.</p>
+    </div>
+    <form id="projectForm" class="project-form" autocomplete="off">
+      <label><span data-i18n="projName">Project name</span>
+        <input type="text" id="projName" maxlength="80"></label>
+      <div class="row3">
+        <label><span data-i18n="rate">Hourly rate</span>
+          <input type="number" id="rate" min="0" step="1"></label>
+        <label><span data-i18n="currency">Currency</span>
+          <select id="currency">
+            <option>USD</option><option>BRL</option><option>EUR</option>
+            <option>GBP</option><option>JPY</option><option>CAD</option>
+          </select></label>
+        <label><span data-i18n="hoursPerDay">Hours / day</span>
+          <input type="number" id="hoursPerDay" min="0.5" max="16" step="0.5"></label>
+        <label><span data-i18n="startDate">Start date (ISO)</span>
+          <input type="date" id="startDate"></label>
+      </div>
+    </form>
+  </section>
+
+  <section class="stats-row" id="statsRow"><!-- summary cards injected --></section>
+
+  <section class="card">
+    <form id="addForm" class="add-form" autocomplete="off">
+      <input type="text" id="fName" maxlength="120" data-i18n-ph="newFeaturePh"
+             placeholder="e.g. OAuth login">
+      <select id="fType">
+        <option value="must" data-i18n="type.must">Must</option>
+        <option value="should" selected data-i18n="type.should">Should</option>
+        <option value="could" data-i18n="type.could">Could</option>
+        <option value="wont" data-i18n="type.wont">Won't</option>
+      </select>
+      <input type="number" id="fEstimate" min="0" step="0.5" placeholder="h" title="Hours">
+      <input type="number" id="fValue" min="0" max="100" step="1" placeholder="v" title="Value 0–100">
+      <select id="fRisk">
+        <option value="low" data-i18n="risk.low">Low risk</option>
+        <option value="medium" data-i18n="risk.medium">Medium risk</option>
+        <option value="high" data-i18n="risk.high">High risk</option>
+      </select>
+      <button type="submit" class="btn primary" data-i18n="add">Add feature</button>
+    </form>
+    <p id="problems" class="problems" role="alert" hidden></p>
+    <div class="table-wrap">
+      <table class="feat-table" aria-describedby="tableHint">
+        <thead>
+          <tr>
+            <th data-i18n="th.feature">Feature</th>
+            <th data-i18n="th.type">Type</th>
+            <th data-i18n="th.est">Est. h</th>
+            <th data-i18n="th.value">Value</th>
+            <th data-i18n="th.risk">Risk</th>
+            <th data-i18n="th.score">Score</th>
+            <th data-i18n="th.done">Done</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="featBody"><!-- rows injected --></tbody>
+      </table>
+      <p id="tableHint" class="hint" data-i18n="tableHint">Ranked by MoSCoW first, then
+      bang-per-buck (value × risk factor ÷ effort). Won't always last.</p>
+    </div>
+  </section>
+
+  <section class="grid2">
+    <div class="card">
+      <h2 data-i18n="timelineTitle">Delivery timeline</h2>
+      <ol id="timelineList" class="timeline"></ol>
+      <p id="timelineSummary" class="hint"></p>
+    </div>
+    <div class="card">
+      <div class="budget-head">
+        <h2 data-i18n="cutTitle">Budget cut line</h2>
+        <label class="inline"><span data-i18n="budgetH">Budget (hours)</span>
+          <input type="number" id="budgetInput" min="0" step="1"></label>
+      </div>
+      <p id="cutSummary" class="hint"></p>
+      <div class="chips" id="cutSelected"></div>
+      <div class="chips muted-chips" id="cutDeferred"></div>
+      <button id="shareBtn" class="btn ghost wide" data-i18n="shareLink">Copy shareable link</button>
+      <p id="shareMsg" class="hint" role="status"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p><span data-i18n="offlineNote">Works fully offline — install it as an app.</span>
+     · <a href="https://github.com/chr-z/scopekit" target="_blank" rel="noopener">GitHub</a></p>
+  <p class="muted">Built by <a href="https://github.com/chr-z" target="_blank" rel="noopener">@chr-z</a></p>
+</footer>
+
+<div id="toast" class="toast" role="status" hidden></div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

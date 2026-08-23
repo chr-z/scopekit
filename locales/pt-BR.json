@@ -1,0 +1,14 @@
+{
+  "title": "ScopeKit",
+  "subtitle": "Planeje recursos e escopo para produtos SaaS micro",
+  "currency": "BRL",
+  "localeToggle": "EN",
+  "plan": "Plano",
+  "pricing": "Preço",
+  "save": "Salvar",
+  "export": "Exportar",
+  "import": "Importar",
+  "noProjects": "Nenhum projeto ainda. Crie um acima!",
+  "saved": "Salvo no localStorage",
+  "loaded": "Carregado do localStorage"
+}
